@@ -1,0 +1,27 @@
+* {
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: aquamarine;
+}
+
+.contain {
+    background-color: rgba(52, 0, 172, 0.63);
+    width: 50vh;
+    height: 50vh;
+    border: thick inset black;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contain > p{
+    color: whitesmoke;
+}
