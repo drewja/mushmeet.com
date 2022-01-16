@@ -4,7 +4,7 @@ After=network-online.target networking.service
 Wants=network-online.target networking.service
 
 [Service]
-Type=forking
+Type=simple
 WorkingDirectory=/home/jdoe/mushmeet.com
 ExecStart=uvicorn main:app --port 80 --host 0.0.0.0
 
