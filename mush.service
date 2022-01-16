@@ -1,10 +1,10 @@
 [Unit]
 Description=MushMeet.com
-After=network-online.target
-Wants=network-online.target
+After=network-online.target networking.service
+Wants=network-online.target networking.service
 
 [Service]
-Type=simple
+Type=forking
 WorkingDirectory=/home/jdoe/mushmeet.com
 ExecStart=uvicorn main:app --port 80 --host 0.0.0.0
 
