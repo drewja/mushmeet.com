@@ -4,12 +4,9 @@ After=network-online.target
 Wants=network-online.target
 
 [Service]
-User=root
-WorkingDirectory=/home/jdoe/mushmeet.com
-RuntimeDirectory=/home/jdoe/mushmeet.com
+Type=simple
 ExecStart=/home/jdoe/mushmeet.com/serve.sh
-Restart=always
-KillMode=process
+Restart=on-failure
 PIDFile=/tmp/mushmeet.com.pid
 
 [Install]
