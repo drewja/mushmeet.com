@@ -1,6 +1,6 @@
 export default client;
 
-const client = (document) => {
+function client(document){
     console.log(document.title);
     return document
 }
