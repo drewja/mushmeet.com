@@ -5,8 +5,8 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-ExecStart=/home/jdoe/mushmeet.com/serve.sh
-Restart=on-failure
+WorkingDirectory=/home/jdoe/mushmeet.com
+ExecStart=uvicorn main:app --port 80
 PIDFile=/tmp/mushmeet.com.pid
 
 [Install]
