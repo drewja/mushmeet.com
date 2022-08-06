@@ -2,3 +2,5 @@ uvicorn[standard]
 starlette
 pytest
 ipython
+watchfiles
+
