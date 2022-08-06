@@ -32,10 +32,18 @@ document.querySelector(".contain").onclick = () => {
 
 const canvas = document.getElementById('bg-canvas');
 const ctx = canvas.getContext('2d');
-let w = parseInt(window.getComputedStyle(canvas, null).getPropertyValue("width"));
-canvas.setAttribute('width', w);
-let h = parseInt(window.getComputedStyle(canvas, null).getPropertyValue("height"));
-canvas.setAttribute('height', h);
-ctx.fillStyle = "black";
-ctx.fillRect(50,50, w-100, h-100);
-console.log(w,h)
+
+function draw_canvas(canvas){
+    let w = parseInt(window.getComputedStyle(canvas, null).getPropertyValue("width"));
+    canvas.setAttribute('width', w);
+    let h = parseInt(window.getComputedStyle(canvas, null).getPropertyValue("height"));
+    canvas.setAttribute('height', h);
+    ctx.fillStyle = "black";
+    ctx.fillRect(50,50, w-100, h-100);
+
+    ctx.strokeStyle = "magenta";
+    ctx.lineWidth = 10;
+    ctx.strokeRect(45, 45, w-90, h-90);
+}
+draw_canvas(canvas);
+addEventListener('resize', (event) => draw_canvas(canvas));   
