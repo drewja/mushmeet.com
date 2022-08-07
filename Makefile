@@ -8,4 +8,7 @@ serve: dev
 clean:
 	mkdir -p __pycache__
 	rm -r __pycache__
+	npm --prefix client run clean
+build: clean
+	npm --prefix client run build
 
