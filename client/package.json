@@ -1,6 +1,6 @@
 {
-  "name": "my-rollup-project",
-  "version": "1.0.0",
+  "name": "mush",
+  "version": "0.0",
   "description": "",
   "watch": {
     "build": {
