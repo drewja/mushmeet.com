@@ -4,11 +4,6 @@ import foo from "./foo.js";
 foo(document);
 console.log(version);
 
-function toggle(r){
-    if (r == -360) return 360;
-    return -360;
-}
-
 var tvars = {
     duration: 4, 
     rotation: -360,
