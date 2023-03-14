@@ -53,10 +53,10 @@ function draw_canvas(canvas){
     canvas.setAttribute('width', w);
     let h = parseInt(window.getComputedStyle(canvas, null).getPropertyValue("height"));
     canvas.setAttribute('height', h);
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "#141414";
     ctx.fillRect(50,50, w-100, h-100);
 
-    ctx.strokeStyle = "magenta";
+    ctx.strokeStyle = "#20BCE7";
     ctx.lineWidth = 10;
     ctx.strokeRect(45, 45, w-90, h-90);
 }
