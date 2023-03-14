@@ -9,7 +9,7 @@ function toggle(r){
     return -360;
 }
 var tvars = {
-    duration: 4, 
+    duration: 10, 
     rotation: -360,
     ease: "none",
     repeat: -1,
@@ -25,11 +25,25 @@ var tvars = {
 
 var tl=gsap.timeline();
 var tween = tl.to(".contain", tvars);
+
+const fmt = new Intl.NumberFormat('en-US').format;
+let start, raf;
+let stop = false;
+function frame(timestamp) {
+    if (start == undefined) start = timestamp;
+
+    const elapsed = timestamp - start;
+    if (elapsed < Number.MAX_SAFE_INTEGER) {
+        document.querySelector(".contain").innerHTML = fmt(~~(elapsed + .5)) + ' ms';
+        if (!stop) raf = window.requestAnimationFrame(frame);
+    }
+}
+
 document.querySelector(".contain").onclick = () => {
     cancelAnimationFrame(raf);
     start = undefined;
-    raf = window.requestAnimationFrame(frame);
     tl.reversed( !tl.reversed() );
+    raf = window.requestAnimationFrame(frame);
 }
 
 const canvas = document.getElementById('bg-canvas');
@@ -48,18 +62,3 @@ function draw_canvas(canvas){
 }
 draw_canvas(canvas);
 addEventListener('resize', (event) => draw_canvas(canvas));
-const fmt = new Intl.NumberFormat('en-US');
-let lasttime, start, raf;
-let stop = false;
-function frame(timestamp) {
-    if (start == undefined) start = timestamp;
-
-    const elapsed = timestamp - start;
-    if (elapsed < 10000) {
-        lasttime = timestamp;
-        document.querySelector(".contain").innerHTML = fmt.format(~~(elapsed + .5));
-        if (!stop) raf = window.requestAnimationFrame(frame);
-    }
-}
-
-raf = window.requestAnimationFrame(frame);
