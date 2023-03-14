@@ -4,6 +4,10 @@ import foo from "./foo.js";
 foo(document);
 console.log(version);
 
+function toggle(r){
+    if (r == -360) return 360;
+    return -360;
+}
 var tvars = {
     duration: 4, 
     rotation: -360,
@@ -22,6 +26,9 @@ var tvars = {
 var tl=gsap.timeline();
 var tween = tl.to(".contain", tvars);
 document.querySelector(".contain").onclick = () => {
+    cancelAnimationFrame(raf);
+    start = undefined;
+    raf = window.requestAnimationFrame(frame);
     tl.reversed( !tl.reversed() );
 }
 
@@ -41,3 +48,18 @@ function draw_canvas(canvas){
 }
 draw_canvas(canvas);
 addEventListener('resize', (event) => draw_canvas(canvas));
+const fmt = new Intl.NumberFormat('en-US');
+let lasttime, start, raf;
+let stop = false;
+function frame(timestamp) {
+    if (start == undefined) start = timestamp;
+
+    const elapsed = timestamp - start;
+    if (elapsed < 10000) {
+        lasttime = timestamp;
+        document.querySelector(".contain").innerHTML = fmt.format(~~(elapsed + .5));
+        if (!stop) raf = window.requestAnimationFrame(frame);
+    }
+}
+
+raf = window.requestAnimationFrame(frame);

@@ -8,17 +8,10 @@ from dataclasses import dataclass
 from static import static_files
 from starlette.websockets import WebSocket
 
-
-async def websock(scope, receive, send):
-    assert scope['type'] == "websocket"
-    websocket = WebSocket(scope=scope, receive=receive, send=send)
-    await websocket.accept()
-    await websocket.send_text('Hello, world!')
-    await websocket.close()
-
 clients_connected = {}
+ws_clients = {}
 @dataclass
-class HTTPClient:
+class Client:
     """Class for keeping track of recently connected http clients"""
     ident: uuid.UUID
     host: str
@@ -32,6 +25,15 @@ class HTTPClient:
         self.scope = scope
         self.agent = dict(scope['headers'])[b'user-agent']
 
+async def websock(scope, receive, send):
+    assert scope['type'] == "websocket"
+    websocket = WebSocket(scope=scope, receive=receive, send=send)
+    await websocket.accept()
+    await asyncio.sleep(5)
+    await websocket.send_text('Hello, world!')
+    await asyncio.sleep(10)
+    await websocket.close()
+
 async def http(scope, receive, send):
 
     assert scope['type'] == 'http'
@@ -39,13 +41,14 @@ async def http(scope, receive, send):
     if not scope['client'] in clients_connected.keys():
         """Parse the scope into a dataclass and add it to a dict
         containing the most recently connected clients:
-        { ('10.10.10.10', 45003) : HTTPClient }
+        { ('10.10.10.10', 45003) : Client }
 
         Create a timeout callback for the data and add it to the event loop
         """
-        c = HTTPClient(scope)
-        print(f'ADD ([{c.ident}]) host: {c.host} port: {c.port} agent: {c.agent}')
-        clients_connected.update({scope['client'] : c})
+        if scope['client'] not in clients_connected:
+            c = Client(scope)
+            print(f'ADD ([{c.ident}]) host: {c.host} port: {c.port} agent: {c.agent}')
+            clients_connected.update({scope['client'] : c})
 
         def client_timeout():
             if scope['client'] in clients_connected:
@@ -62,7 +65,9 @@ async def NOT_FOUND(request, exception):
     return Response(status_code= 404)
 
 async def edge(scope, receive, send):
-
+    if scope['type'] == 'websocket':
+        await websock(scope, receive, send)
+        return
     if scope['type'] == 'http': return await http(scope, receive, send)
-
+print('**********************************    starting')
 app = ExceptionMiddleware(edge, handlers = {404: NOT_FOUND})
