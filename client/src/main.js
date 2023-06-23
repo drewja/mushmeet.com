@@ -49,6 +49,7 @@ document.querySelector(".contain").onclick = () => {
 const canvas = document.getElementById('bg-canvas');
 const ctx = canvas.getContext('2d');
 function draw_canvas(canvas){
+    ctx.reset();
     let w = parseInt(window.getComputedStyle(canvas, null).getPropertyValue("width"));
     canvas.setAttribute('width', w);
     let h = parseInt(window.getComputedStyle(canvas, null).getPropertyValue("height"));
@@ -59,6 +60,86 @@ function draw_canvas(canvas){
     ctx.strokeStyle = "#20BCE7";
     ctx.lineWidth = 10;
     ctx.strokeRect(45, 45, w-90, h-90);
+
+    if (particles) {
+        ctx.strokeStyle = "green";
+        ctx.lineWidth = 1;
+        particles.forEach((p)=>{
+            ctx.strokeStyle = p.color.next();
+            ctx.beginPath();
+            ctx.ellipse(p.x, p.y, p.radius, 75, Math.PI / 4, 0, 2 * Math.PI);
+            ctx.stroke();
+        })
+    }
 }
+
+class range{
+    constructor(low, high, step, begin){
+        this.x = begin;
+        if (begin == undefined) this.x = low;
+        this.low = low;
+        this.step = step;
+        this.high = high;}
+    next(){
+        let x = this.x + this.step;
+        if (x > this.high){
+            this.step *= -1;
+            let r = x - this.high
+            this.x = this.high - r
+            return this.x;
+        }
+        if (x<this.low){
+            this.step *= -1;
+            let r = this.low - x
+            this.x = this.low + r;
+            return this.x
+        }
+        this.x += this.step
+        return this.x
+    }
+}
+
+class Color{
+    constructor(r, g, b){
+        this.rgb = [
+            new range(0,255,5,r),
+            new range(0,255,5,g),
+            new range(0,255,5,b)
+        ];
+    }
+    next(){
+        let _rgb = [];
+        this.rgb.forEach((__)=> _rgb.push(__.next()));
+        const [r, g, b] = _rgb;
+        return `rgb(${r},${g},${b})` 
+    }
+}
+
+class Particles{
+    constructor(x, y, r, color){
+        this.radius = new range(0, 50, 5)
+        this.x = new range(x, x*10, 10,x*9);
+        this.y = new range(y, y*3, 6);
+        this.particles = new Array;
+    }
+    spawn(){
+        this.particles.push({
+            x: this.x.next(),
+            y: this.y.next(),
+            radius: this.radius.next(),
+            color : new Color(5,200,40)
+        });
+    }
+    forEach(f){
+        this.particles.forEach(f)
+    }
+}
+const particles = new Particles(100, 100, 50);
+
 draw_canvas(canvas);
 addEventListener('resize', (event) => draw_canvas(canvas));
+addEventListener("keydown", (event) => {
+    particles.spawn();
+    draw_canvas(canvas);
+});
+
