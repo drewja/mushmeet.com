@@ -5,7 +5,7 @@ Wants=network-online.target networking.service
 
 [Service]
 Type=simple
-WorkingDirectory=/home/jdoe/mushmeet.com
+WorkingDirectory=/home/jdoe/www/
 ExecStart=uvicorn main:app --port 80 --host 0.0.0.0
 
 [Install]

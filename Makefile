@@ -8,4 +8,9 @@ serve: dev
 clean:
 	mkdir -p __pycache__
 	rm -r __pycache__
-
+	mkdir -p www
+	rm -r www
+pub:
+	mkdir -p www
+	cp *.py www
+	cp -r client/dist www
