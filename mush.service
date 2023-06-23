@@ -1,5 +1,5 @@
 [Unit]
-Description=MushMeet.com
+Description=toknon.fun
 After=network-online.target networking.service
 Wants=network-online.target networking.service
 
