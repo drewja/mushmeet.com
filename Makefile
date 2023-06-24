@@ -15,4 +15,5 @@ clean:
 pub: clean
 	mkdir -p www
 	cp *.py www
-	cp -r client/dist www
+	mkdir -p www/client
+	cp -r client/dist www/client
