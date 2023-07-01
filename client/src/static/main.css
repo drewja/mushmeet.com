@@ -15,20 +15,10 @@
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    min-width: 100vw;
 }
 
-.contain {
-    background-color: #57a773;
-    width: 50vh;
-    height: 50vh;
-    border: thick inset rgb(255, 255, 255);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.contain {
+.status {
     color: whitesmoke;
-    font-size: 40px;
+    font-size: 20px;
 }
