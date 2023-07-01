@@ -1,13 +1,15 @@
 import { version } from "../package.json";
 import foo from "./foo.js";
-import {range} from "./range.js";
+import { range } from "./range.js";
 foo(document);
 console.log(version);
-
 
 const fmt = new Intl.NumberFormat("en-US").format;
 let start, raf;
 let stop = false;
+
+var particles;
+
 function frame(timestamp) {
   if (start == undefined) start = timestamp;
 
@@ -22,16 +24,14 @@ function frame(timestamp) {
 }
 
 document.querySelector(".content").onclick = (e) => {
+
+  particles = new Particles(100, 100);
   console.log(e);
   cancelAnimationFrame(raf);
   start = undefined;
   raf = window.requestAnimationFrame(frame);
   document.querySelector(".status").classList.add("running");
-  document.querySelector(".running").onclick = (ev) => {
-    particles = new Particles(100, 100);
-  }
 };
-
 
 function draw_canvas(canvas) {
   ctx.reset();
@@ -73,17 +73,18 @@ class Color {
   }
 }
 
-
 const canvas = document.getElementById("bg-canvas");
 const ctx = canvas.getContext("2d");
-let canvas_height = ()=>parseInt(window.getComputedStyle(canvas, null).getPropertyValue("height"));
-let canvas_width = ()=>parseInt(window.getComputedStyle(canvas, null).getPropertyValue("width"));
+let canvas_height = () =>
+  parseInt(window.getComputedStyle(canvas, null).getPropertyValue("height"));
+let canvas_width = () =>
+  parseInt(window.getComputedStyle(canvas, null).getPropertyValue("width"));
 
 class Particles {
   constructor(x, y) {
     this.radius = new range(0, 50, 5);
-    this.x = new range(x, canvas_width()-100, 10, x * 9);
-    this.y = new range(y, canvas_height()-100, 6);
+    this.x = new range(x, canvas_width() - 100, 10, x * 9);
+    this.y = new range(y, canvas_height() - 100, 6);
     this.particles = new Array();
     this.max_len = 30;
   }
@@ -100,8 +101,6 @@ class Particles {
     this.particles.forEach(f);
   }
 }
-var particles = new Particles(100, 100);
 
 draw_canvas(canvas);
 addEventListener("resize", (event) => draw_canvas(canvas));
-
