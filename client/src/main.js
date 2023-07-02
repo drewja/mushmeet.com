@@ -37,11 +37,11 @@ function draw_canvas(canvas) {
   let h = canvas_height();
   canvas.setAttribute("height", h);
   ctx.fillStyle = "#141414";
-  ctx.fillRect(50, 50, w - 100, h - 100);
+  ctx.fillRect(10, 10, w - 20, h - 20);
 
   ctx.strokeStyle = "#20BCE7";
   ctx.lineWidth = 10;
-  ctx.strokeRect(45, 45, w - 90, h - 90);
+  ctx.strokeRect(5, 5, w-10, h-10);
 
   if (particles) {
     ctx.strokeStyle = "green";
@@ -80,8 +80,8 @@ let canvas_width = () =>
 class Particles {
   constructor(x, y) {
     this.radius = new range(0, 50, 5);
-    this.x = new range(x, canvas_width() - 100, 10, x * 9);
-    this.y = new range(y, canvas_height() - 100, 6);
+    this.x = new range(65, canvas_width() - 65, 10, x * 9);
+    this.y = new range(65, canvas_height() - 65, 6, y);
     this.particles = new Array();
     this.max_len = 30;
   }
