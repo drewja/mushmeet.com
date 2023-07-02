@@ -2,8 +2,7 @@ import { version } from "../package.json";
 import foo from "./foo.js";
 import { range } from "./range.js";
 foo(document);
-console.log(version);
-
+/* TODO: refactor */
 const fmt = new Intl.NumberFormat("en-US").format;
 let start, raf;
 let stop = false;
@@ -24,9 +23,7 @@ function frame(timestamp) {
 }
 
 document.querySelector(".content").onclick = (e) => {
-
   particles = new Particles(100, 100);
-  console.log(e);
   cancelAnimationFrame(raf);
   start = undefined;
   raf = window.requestAnimationFrame(frame);
