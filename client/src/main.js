@@ -1,6 +1,6 @@
 import { version } from "../package.json";
 import foo from "./foo.js";
-import { range } from "./range.js";
+import { rangeBounce } from "./range.js";
 foo(document);
 /* TODO: refactor */
 const fmt = new Intl.NumberFormat("en-US").format;
@@ -57,14 +57,14 @@ function draw_canvas(canvas) {
 class Color {
   constructor(r, g, b) {
     this.rgb = [
-      new range(0, 255, 5, r),
-      new range(0, 255, 5, g),
-      new range(0, 255, 5, b),
+      rangeBounce(0, 255, 5, r),
+      rangeBounce(0, 255, 5, g),
+      rangeBounce(0, 255, 5, b),
     ];
   }
   next() {
     let _rgb = [];
-    this.rgb.forEach((__) => _rgb.push(__.next()));
+    this.rgb.forEach((__) => _rgb.push(__()));
     const [r, g, b] = _rgb;
     return `rgb(${r},${g},${b})`;
   }
@@ -79,17 +79,17 @@ let canvas_width = () =>
 
 class Particles {
   constructor(x, y) {
-    this.radius = new range(0, 50, 5);
-    this.x = new range(65, canvas_width() - 65, 10, x * 9);
-    this.y = new range(65, canvas_height() - 65, 6, y);
+    this.radius = rangeBounce(0, 50, 5);
+    this.x = rangeBounce(65, canvas_width() - 65, 10, x * 9);
+    this.y = rangeBounce(65, canvas_height() - 65, 6, y);
     this.particles = new Array();
     this.max_len = 30;
   }
   spawn() {
     this.particles.push({
-      x: this.x.next(),
-      y: this.y.next(),
-      radius: this.radius.next(),
+      x: this.x(),
+      y: this.y(),
+      radius: this.radius(),
       color: new Color(5, 200, 40),
     });
     if (this.particles.length > this.max_len) this.particles.shift();
