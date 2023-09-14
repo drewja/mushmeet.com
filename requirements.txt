@@ -1,5 +1,5 @@
-uvicorn[full]
-starlette[full]
+uvicorn[standard]
+starlette
 pytest
 ipython
 watchfiles
