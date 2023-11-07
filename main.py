@@ -29,23 +29,14 @@ async def websock(scope, receive, send):
     assert scope['type'] == "websocket"
     websocket = WebSocket(scope=scope, receive=receive, send=send)
     await websocket.accept()
-    await asyncio.sleep(5)
-    await websocket.send_text('Hello, world!')
-    await asyncio.sleep(10)
+    await websocket.send_text('0xF1F1F1')
     await websocket.close()
 
 async def http(scope, receive, send):
 
     assert scope['type'] == 'http'
 
-    if not scope['client'] in clients_connected.keys():
-        """Parse the scope into a dataclass and add it to a dict
-        containing the most recently connected clients:
-        { ('10.10.10.10', 45003) : Client }
-
-        Create a timeout callback for the data and add it to the event loop
-        """
-        if scope['client'] not in clients_connected:
+    if scope['client'] not in clients_connected:
             c = Client(scope)
             print(f'ADD ([{c.ident}]) host: {c.host} port: {c.port} agent: {c.agent}')
             clients_connected.update({scope['client'] : c})
@@ -53,7 +44,7 @@ async def http(scope, receive, send):
         def client_timeout():
             if scope['client'] in clients_connected:
                 cc = clients_connected.pop(scope['client'])
-                print(f'([{cc.ident}]) TIMEOUT host: {cc.host} port: {cc.port}')
+                print(f'TIMEOUT ([{cc.ident}]) host: {cc.host} port: {cc.port}')
 
         loop = asyncio.get_running_loop()
         loop.call_later(5, client_timeout)
@@ -69,5 +60,6 @@ async def edge(scope, receive, send):
         await websock(scope, receive, send)
         return
     if scope['type'] == 'http': return await http(scope, receive, send)
+
 print('**********************************    starting')
 app = ExceptionMiddleware(edge, handlers = {404: NOT_FOUND})
