@@ -37,10 +37,9 @@ async def http(scope, receive, send):
     assert scope['type'] == 'http'
 
     if scope['client'] not in clients_connected:
-            c = Client(scope)
-            print(f'ADD ([{c.ident}]) host: {c.host} port: {c.port} agent: {c.agent}')
-            clients_connected.update({scope['client'] : c})
-
+        c = Client(scope)
+        print(f'ADD ([{c.ident}]) host: {c.host} port: {c.port} agent: {c.agent}')
+        clients_connected.update({scope['client'] : c})
         def client_timeout():
             if scope['client'] in clients_connected:
                 cc = clients_connected.pop(scope['client'])

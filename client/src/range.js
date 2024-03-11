@@ -22,8 +22,6 @@ function test_range(rangeFunc){
     out.push(o);
     if (o !== e) pass = false;
   })
-  console.log('e ', expected);
-  console.log('o', out);
   if (pass) { console.log('test pass (rangeBounce)')}
   else console.log('test fail! (rangeBounce)')
 }
